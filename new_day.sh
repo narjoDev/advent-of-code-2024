@@ -1,0 +1,1 @@
+cp -r day-00 day-
