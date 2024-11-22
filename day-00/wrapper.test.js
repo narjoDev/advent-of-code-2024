@@ -7,22 +7,22 @@ node: true,
 */
 
 const { test, expect, describe } = require("@jest/globals");
-const { FILES, partOne, partTwo } = require("./wrapper");
+const { INPUTS, ANSWERS, partOne, partTwo } = require("./wrapper");
 
 describe("partOne", () => {
   test("input-example correct answer", () => {
-    expect(partOne(FILES.example)).toStrictEqual("Not Implemented");
+    expect(partOne(INPUTS.example)).toStrictEqual("Not Implemented");
   });
   // test("input-actual correct answer", () => {
-  //   expect(partOne(FILES.actual)).toStrictEqual(null);
-  // })
+  //   expect(partOne(INPUTS.actual)).toStrictEqual(ANSWERS[1]);
+  // });
 });
 
 describe("partTwo", () => {
   test("input-example correct answer", () => {
-    expect(partTwo(FILES.example)).toStrictEqual("Not Implemented");
+    expect(partTwo(INPUTS.example)).toStrictEqual("Not Implemented");
   });
   // test("input-actual correct answer", () => {
-  //   expect(partTwo(FILES.actual)).toStrictEqual(null);
+  //   expect(partTwo(INPUTS.actual)).toStrictEqual(ANSWERS[2]);
   // })
 });
