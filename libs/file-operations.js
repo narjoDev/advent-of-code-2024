@@ -8,22 +8,8 @@ node: true,
 
 const fs = require("node:fs");
 
-function readFile(filename) {
-  try {
-    const data = fs.readFileSync(filename, "utf8");
-    return data;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-function writeFile(filename, content) {
-  try {
-    fs.writeFileSync(filename, content);
-    // file written successfully
-  } catch (err) {
-    console.error(err);
-  }
-}
+//no error handling fails import loudly
+const readFile = (filename) => fs.readFileSync(filename, "utf8");
+const writeFile = (filename, content) => fs.writeFileSync(filename, content);
 
 module.exports = { readFile, writeFile };
