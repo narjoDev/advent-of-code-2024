@@ -14,6 +14,7 @@ const { DAY, partOne, partTwo } = require("./solution");
 
 // TODO: input example answers
 
+//use the correct type here (probably an integer)
 const EXAMPLE_ANSWERS = {
   1: undefined,
   2: undefined,
@@ -37,26 +38,26 @@ const ANSWERS = {
 
 // TESTS
 
-describe("partOne", () => {
-  test("input-example", () => {
-    expect(partOne(INPUTS.example)).toStrictEqual(EXAMPLE_ANSWERS[1]);
-  });
-  test("input-actual", () => {
-    const computedString = String(partOne(INPUTS.actual));
-    writeFile(`${DIR}/output1.txt`, computedString);
+const PARTS = [
+  { id: 1, partFunction: partOne },
+  { id: 2, partFunction: partTwo },
+];
 
-    expect(computedString).toStrictEqual(ANSWERS[1]);
-  });
-});
+PARTS.forEach((part) => {
+  const { id, partFunction } = part;
 
-describe("partTwo", () => {
-  test("input-example", () => {
-    expect(partTwo(INPUTS.example)).toStrictEqual(EXAMPLE_ANSWERS[2]);
-  });
-  test("input-actual", () => {
-    const computedString = String(partTwo(INPUTS.actual));
-    writeFile(`${DIR}/output2.txt`, computedString);
+  describe(`Part ${id} Solution`, () => {
+    test("example input", () => {
+      //test with strict type checking
+      expect(partFunction(INPUTS.example)).toStrictEqual(EXAMPLE_ANSWERS[id]);
+    });
 
-    expect(computedString).toStrictEqual(ANSWERS[2]);
+    test("actual input", () => {
+      //test converted to string since we read it from a file
+      const computedString = String(partFunction(INPUTS.actual));
+      writeFile(`${DIR}/output${id}.txt`, computedString);
+
+      expect(computedString).toStrictEqual(ANSWERS[id]);
+    });
   });
 });
