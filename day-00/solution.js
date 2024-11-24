@@ -1,9 +1,9 @@
 function partOne(file) {
-  return "Not Implemented";
+  return;
 }
 
 function partTwo(file) {
-  return "Not Implemented";
+  return;
 }
 
 //used by wrapper to generate file directory
