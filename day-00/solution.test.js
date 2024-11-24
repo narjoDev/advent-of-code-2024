@@ -1,11 +1,3 @@
-"use strict";
-/* jshint 
-esversion: 6,
-devel: true,
-node: true,
--W097 
-*/
-
 // imports
 
 const { test, expect, describe } = require("@jest/globals");
