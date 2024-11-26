@@ -2,27 +2,25 @@
 
 const { test, expect, describe } = require("@jest/globals");
 const { readFile, writeFile } = require("../libs/file-operations");
-const { DAY, partOne, partTwo } = require("./solution");
+const { partOne, partTwo } = require("./solution");
 
-// TODO: input example answers
+// example answers
 
 //use the correct type here (probably an integer)
 const EXAMPLE_ANSWERS = {
+  // TODO:
   1: undefined,
   2: undefined,
 };
 
 // read input and answer files
 
-const dayPadded = DAY.toString().padStart(2, "0");
-const DIR = `./day-${dayPadded}`;
-
 const INPUTS = {
-  actual: readFile(`${DIR}/input-actual.txt`),
-  example: readFile(`${DIR}/input-example.txt`),
+  actual: readFile(`${__dirname}/input-actual.txt`),
+  example: readFile(`${__dirname}/input-example.txt`),
 };
 
-let answers = readFile(`${DIR}/answers.txt`).split("\n");
+let answers = readFile(`${__dirname}/answers.txt`).split("\n");
 const ANSWERS = {
   1: answers[0],
   2: answers[1],
@@ -45,7 +43,7 @@ describe.each(parts)("Part %i Solution", (id, partFunction) => {
     //this will fail until we verify and save a correct answer to answers.txt
     //test converted to string since we read answer from a file
     const computedString = String(partFunction(INPUTS.actual));
-    writeFile(`${DIR}/output${id}.txt`, computedString);
+    writeFile(`${__dirname}/output${id}.txt`, computedString);
 
     expect(computedString).toStrictEqual(ANSWERS[id]);
   });
