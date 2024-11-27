@@ -6,7 +6,7 @@ const { partOne, partTwo } = require("./solution");
 
 // example answers
 
-//use the correct type here (probably an integer)
+//use the correct type here (probably a number)
 const EXAMPLE_ANSWERS = {
   // TODO:
   1: undefined,
@@ -35,16 +35,18 @@ const parts = [
 
 describe.each(parts)("Part %i Solution", (id, partFunction) => {
   test("example input", () => {
+    const computed = partFunction(INPUTS.example);
     //test with strict type checking
-    expect(partFunction(INPUTS.example)).toStrictEqual(EXAMPLE_ANSWERS[id]);
+    expect(computed).toStrictEqual(EXAMPLE_ANSWERS[id]);
   });
 
   test("actual input", () => {
-    //this will fail until we verify and save a correct answer to answers.txt
-    //test converted to string since we read answer from a file
+    //this will fail until we save a correct answer to answers.txt
+    //convert computed solution to string since we read answer from a file
     const computedString = String(partFunction(INPUTS.actual));
-    writeFile(`${__dirname}/output${id}.txt`, computedString);
-
     expect(computedString).toStrictEqual(ANSWERS[id]);
+
+    //output for easy copy pasting
+    writeFile(`${__dirname}/output${id}.txt`, computedString);
   });
 });
