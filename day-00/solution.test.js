@@ -28,6 +28,17 @@ const ANSWERS = {
 
 // TESTS
 
+// helpers
+
+describe("Helper: PLACEHOLDER", () => {
+  test("PLACEHOLDER", () => {
+    const computed = undefined;
+    expect(computed).toStrictEqual(undefined);
+  });
+});
+
+// full solutions
+
 const parts = [
   [1, partOne],
   [2, partTwo],
