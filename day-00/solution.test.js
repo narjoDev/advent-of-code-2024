@@ -55,9 +55,11 @@ describe.each(parts)("Part %i Solution", (id, partFunction) => {
     //this will fail until we save a correct answer to answers.txt
     //convert computed solution to string since we read answer from a file
     const computedString = String(partFunction(INPUTS.actual));
-    expect(computedString).toStrictEqual(ANSWERS[id]);
 
     //output for easy copy pasting
+    //must do this before the assertion fails or it gets skipped
     writeFile(`${__dirname}/output${id}.txt`, computedString);
+
+    expect(computedString).toStrictEqual(ANSWERS[id]);
   });
 });

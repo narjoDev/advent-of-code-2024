@@ -1,1 +1,1 @@
-actual
+https://adventofcode.com/2024/day/PLACEHOLDER/input
