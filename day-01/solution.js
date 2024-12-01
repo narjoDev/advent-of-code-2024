@@ -1,4 +1,4 @@
-function partOne(file) {
+function parseToLists(file) {
   // get left and right lists
   let lines = file.split("\n");
   const left = [];
@@ -8,6 +8,11 @@ function partOne(file) {
     left.push(leftNumber);
     right.push(rightNumber);
   });
+  return [left, right];
+}
+
+function partOne(file) {
+  const [left, right] = parseToLists(file);
   //sort both lists to par up
   left.sort();
   right.sort();
@@ -21,8 +26,24 @@ function partOne(file) {
   return;
 }
 
+function listToTally(array) {
+  const count = {};
+  array.forEach((value) => {
+    count[value] = (count[value] ?? 0) + 1;
+  });
+  return count;
+}
+
 function partTwo(file) {
-  return;
+  const [left, right] = parseToLists(file);
+  const rightTally = listToTally(right);
+
+  let total = 0;
+  left.forEach((v) => {
+    total += v * (rightTally[v] ?? 0);
+  });
+
+  return total;
 }
 
 module.exports = { partOne, partTwo };

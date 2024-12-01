@@ -21,9 +21,8 @@ const ANSWERS = {
 
 //use the correct type here (probably a number)
 const EXAMPLE_ANSWERS = {
-  // TODO:
   1: 11,
-  2: undefined,
+  2: 31,
 };
 
 // TESTS
