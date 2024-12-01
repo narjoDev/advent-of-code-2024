@@ -38,12 +38,10 @@ describe("Helper: PLACEHOLDER", () => {
 
 // full solutions
 
-const parts = [
+describe.each([
   [1, partOne],
   [2, partTwo],
-];
-
-describe.each(parts)("Part %i Solution", (id, partFunction) => {
+])("Part %i Solution", (id, partFunction) => {
   test("example input", () => {
     const computed = partFunction(INPUTS.example);
     //test with strict type checking
