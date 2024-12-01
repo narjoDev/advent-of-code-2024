@@ -4,15 +4,6 @@ const { test, expect, describe } = require("@jest/globals");
 const { readFile, writeFile } = require("../libs/file-operations");
 const { partOne, partTwo } = require("./solution");
 
-// example answers
-
-//use the correct type here (probably a number)
-const EXAMPLE_ANSWERS = {
-  // TODO:
-  1: undefined,
-  2: undefined,
-};
-
 // read input and answer files
 
 const INPUTS = {
@@ -24,6 +15,15 @@ let answers = readFile(`${__dirname}/answers.txt`).split("\n");
 const ANSWERS = {
   1: answers[0],
   2: answers[1],
+};
+
+// example answers
+
+//use the correct type here (probably a number)
+const EXAMPLE_ANSWERS = {
+  // TODO:
+  1: undefined,
+  2: undefined,
 };
 
 // TESTS
