@@ -22,7 +22,7 @@ const ANSWERS = {
 //use the correct type here (probably a number)
 const EXAMPLE_ANSWERS = {
   // TODO:
-  1: undefined,
+  1: 11,
   2: undefined,
 };
 
@@ -55,9 +55,10 @@ describe.each(parts)("Part %i Solution", (id, partFunction) => {
     //this will fail until we save a correct answer to answers.txt
     //convert computed solution to string since we read answer from a file
     const computedString = String(partFunction(INPUTS.actual));
-    expect(computedString).toStrictEqual(ANSWERS[id]);
 
     //output for easy copy pasting
     writeFile(`${__dirname}/output${id}.txt`, computedString);
+
+    expect(computedString).toStrictEqual(ANSWERS[id]);
   });
 });
