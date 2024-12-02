@@ -1,6 +1,6 @@
 function parseFile(file) {
   const lines = file.split("\n").map((line) => {
-    return line.split(/\s+/).map((v) => parseInt(v, 10));
+    return line.split(/\s+/).map(Number);
   });
 
   return lines;
@@ -28,15 +28,11 @@ function isSafe(line) {
 
 function partOne(file) {
   const lines = parseFile(file);
-  let total = 0;
 
-  lines.forEach((line) => {
-    if (isSafe(line)) {
-      total += 1;
-    }
-  });
-
-  return total;
+  return lines.reduce(
+    (totalSafe, line) => totalSafe + (isSafe(line) ? 1 : 0),
+    0
+  );
 }
 
 function dampenerSafe(line) {
@@ -45,28 +41,20 @@ function dampenerSafe(line) {
   }
 
   //naively try every possible deletion
-  for (let pruneIndex = 0; pruneIndex < line.length; pruneIndex += 1) {
+  return line.some((element, index) => {
     const prunedCandidate = [...line];
-    prunedCandidate.splice(pruneIndex, 1);
-    if (isSafe(prunedCandidate)) {
-      return true;
-    }
-  }
-
-  return false;
+    prunedCandidate.splice(index, 1);
+    return isSafe(prunedCandidate);
+  });
 }
 
 function partTwo(file) {
   const lines = parseFile(file);
-  let total = 0;
 
-  lines.forEach((line) => {
-    if (dampenerSafe(line)) {
-      total += 1;
-    }
-  });
-
-  return total;
+  return lines.reduce(
+    (totalSafe, line) => totalSafe + (dampenerSafe(line) ? 1 : 0),
+    0
+  );
 }
 
 module.exports = { partOne, partTwo, isSafe };
