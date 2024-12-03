@@ -3,13 +3,14 @@ function sum(array) {
 }
 
 function evaluateMultiplication(instruction) {
-  const operands = instruction.match(/\d+/g);
+  const operands = instruction.match(/\d+/g).map(Number);
   return operands[0] * operands[1];
 }
 
 function partOne(input) {
   //scan match valid sections
-  const uncorrupted = input.match(/mul\(\d+,\d+\)/g);
+  const MULTIPLICATION_PATTERN = /mul\(\d+,\d+\)/g;
+  const uncorrupted = input.match(MULTIPLICATION_PATTERN);
 
   //evaluate valid things
   const products = uncorrupted.map((instruction) =>
@@ -23,23 +24,22 @@ function partOne(input) {
 function partTwo(input) {
   // ignore instructions that have don't() after the most recent do()
   // split on do() then split those on don't
-  const doSegments = input.split("do()");
+  const DO = "do()";
+  const DONT = "don't()";
+
+  const doSegments = input.split(DO);
+  // (beginning defaults to on)
 
   const enabledSegments = doSegments.map((segment) => {
-    const split = segment.split("don't()");
-    return split[0]; // first element is before any "don't()"
+    const endIndex = segment.indexOf(DONT);
+    return endIndex === -1 ? segment : segment.slice(0, endIndex);
   });
 
-  let operations = [];
-  enabledSegments.forEach((segment) => {
-    operations = operations.concat(segment.match(/mul\(\d+,\d+\)/g));
-  });
-
-  const products = operations.map((instruction) =>
-    evaluateMultiplication(instruction)
-  );
-
-  return sum(products);
+  // do not join the segments before parsing as that risks
+  // hallucinating instructions that were separated before
+  // e.g. `mul(5do(),4)` would erroneously become `mul(5,4)`
+  // (or join with an instruction-invalid character)
+  return sum(enabledSegments.map((segment) => partOne(segment)));
 }
 
 /*
