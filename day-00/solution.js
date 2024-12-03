@@ -3,13 +3,11 @@ function splitToLines(input) {
 }
 
 function partOne(input) {
-  const lines = splitToLines(input);
-  return;
+  splitToLines(input);
 }
 
 function partTwo(input) {
-  const lines = splitToLines(input);
-  return;
+  splitToLines(input);
 }
 
 /*

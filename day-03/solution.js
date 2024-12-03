@@ -1,5 +1,5 @@
 function sum(array) {
-  return array.reduce((acc, v) => acc + v, 0);
+  return array.reduce((acc, number) => acc + number, 0);
 }
 
 function evaluateMultiplication(instruction) {

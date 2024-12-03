@@ -41,7 +41,7 @@ function dampenerSafe(line) {
   }
 
   //naively try every possible deletion
-  return line.some((element, index) => {
+  return line.some((_element, index) => {
     const prunedCandidate = [...line];
     prunedCandidate.splice(index, 1);
     return isSafe(prunedCandidate);

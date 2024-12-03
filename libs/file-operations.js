@@ -1,9 +1,9 @@
 "use strict";
-/* jshint 
+/* jshint
 esversion: 6,
 devel: true,
 node: true,
--W097 
+-W097
 */
 
 const fs = require("node:fs");
