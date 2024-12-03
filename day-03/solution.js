@@ -13,9 +13,7 @@ function partOne(input) {
   const uncorrupted = input.match(MULTIPLICATION_PATTERN);
 
   //evaluate valid things
-  const products = uncorrupted.map((instruction) =>
-    evaluateMultiplication(instruction)
-  );
+  const products = uncorrupted.map(evaluateMultiplication);
 
   //add up
   return sum(products);
@@ -39,7 +37,7 @@ function partTwo(input) {
   // hallucinating instructions that were separated before
   // e.g. `mul(5do(),4)` would erroneously become `mul(5,4)`
   // (or join with an instruction-invalid character)
-  return sum(enabledSegments.map((segment) => partOne(segment)));
+  return sum(enabledSegments.map(partOne));
 }
 
 /*
