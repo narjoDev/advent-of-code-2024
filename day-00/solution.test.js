@@ -8,7 +8,8 @@ const { partOne, partTwo } = require("./solution");
 
 const INPUTS = {
   actual: readFile(`${__dirname}/input-actual.txt`),
-  example: readFile(`${__dirname}/input-example.txt`),
+  example1: readFile(`${__dirname}/example1.txt`),
+  example2: readFile(`${__dirname}/example2.txt`),
 };
 
 let answers = readFile(`${__dirname}/answers.txt`).split("\n");
@@ -44,7 +45,7 @@ describe.each([
   [2, partTwo],
 ])("Part %i Solution", (id, partFunction) => {
   test("example input", () => {
-    const computed = partFunction(INPUTS.example);
+    const computed = partFunction(INPUTS[`example${id}`]);
     //test with strict type checking
     expect(computed).toStrictEqual(EXAMPLE_ANSWERS[id]);
   });
