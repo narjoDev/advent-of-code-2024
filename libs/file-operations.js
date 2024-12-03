@@ -1,11 +1,3 @@
-"use strict";
-/* jshint
-esversion: 6,
-devel: true,
-node: true,
--W097
-*/
-
 const fs = require("node:fs");
 
 //no error handling fails import loudly
