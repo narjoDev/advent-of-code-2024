@@ -2,7 +2,13 @@
 
 const { test, expect, describe } = require("@jest/globals");
 const { readFile, writeFile } = require("../libs/file-operations");
-const { partOne, partTwo, transpose, toDiagonals } = require("./solution");
+const {
+  partOne,
+  partTwo,
+  transpose,
+  toDiagonals,
+  isXmasBox,
+} = require("./solution");
 
 // read input and answer files
 
@@ -22,9 +28,8 @@ const ANSWERS = {
 
 //use the correct type here (probably a number)
 const EXAMPLE_ANSWERS = {
-  // TODO:
   1: 18,
-  2: undefined,
+  2: 9,
 };
 
 // TESTS
@@ -57,6 +62,19 @@ describe("Helper: toDiagonals", () => {
     expect(computed[1][0]).toStrictEqual(0);
     expect(computed[1][1]).toStrictEqual(3);
     expect(computed[2][0]).toStrictEqual(2);
+  });
+});
+
+describe("Helper: isXmasBox", () => {
+  test("isXmasBox: true", () => {
+    const input = ["M.S", ".A.", "M.S"];
+    const computed = isXmasBox(input);
+    expect(computed).toStrictEqual(true);
+  });
+  test("isXmasBox: false", () => {
+    const input = ["M.S", ".A.", "S.M"];
+    const computed = isXmasBox(input);
+    expect(computed).toStrictEqual(false);
   });
 });
 

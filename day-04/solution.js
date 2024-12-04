@@ -1,9 +1,3 @@
-// const WORDS = ["XMAS", "SMAX"];
-
-// function sum(array) {
-//   return array.reduce((acc, number) => acc + number, 0);
-// }
-
 function splitToLines(input) {
   return input.split("\n");
 }
@@ -98,8 +92,45 @@ function partOne(input) {
   return total;
 }
 
+function isXmasBox(box) {
+  const center = box[1][1];
+  if (center !== "A") {
+    return false;
+  }
+
+  const [topLeft, , topRight] = box[0];
+  const [bottomLeft, , bottomRight] = box[2];
+  const corners = topLeft + topRight + bottomLeft + bottomRight;
+  if (
+    corners.match(/M/g)?.length !== 2 ||
+    corners.match(/S/g)?.length !== 2 ||
+    topLeft === bottomRight
+  ) {
+    return false;
+  }
+
+  return true;
+}
+
 function partTwo(input) {
-  splitToLines(input);
+  const lines = splitToLines(input);
+  let total = 0;
+  //for each three by three box
+  const BOX_SIZE = 3;
+  for (let row = 0; row <= lines.length - BOX_SIZE; row += 1) {
+    for (let col = 0; col <= lines[0].length - BOX_SIZE; col += 1) {
+      const box = [];
+      for (let rowOffset = 0; rowOffset < BOX_SIZE; rowOffset += 1) {
+        const slice = lines[row + rowOffset].slice(col, col + BOX_SIZE);
+        box.push(slice);
+      }
+      if (isXmasBox(box)) {
+        total += 1;
+      }
+    }
+  }
+
+  return total;
 }
 
 /*
@@ -109,4 +140,4 @@ export to wrapper file that:
 - outputs return values
 - tests against answers if known
 */
-module.exports = { partOne, partTwo, transpose, toDiagonals };
+module.exports = { partOne, partTwo, transpose, toDiagonals, isXmasBox };
