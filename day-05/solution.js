@@ -23,7 +23,6 @@ function inRightOrder(update, rules) {
 
     if (mustBeAfter) {
       const priors = update.slice(0, index);
-
       if (priors.some((prior) => mustBeAfter.includes(prior))) {
         return false;
       }
@@ -41,28 +40,33 @@ function partOne(input) {
   const { rules, updates } = parseRulesUpdates(input);
   const rightUpdates = updates.filter((update) => inRightOrder(update, rules));
   const middles = rightUpdates.map(middleOf);
+
   return middles.reduce((sum, number) => sum + number, 0);
 }
 
 function reorderUpdate(update, rules) {
   const newUpdate = [...update];
+
   while (!inRightOrder(newUpdate, rules)) {
     for (let index = 0; index < newUpdate.length; index += 1) {
       const page = newUpdate[index];
       const mustBeAfter = rules[page];
+
       if (!mustBeAfter) continue;
 
       const priors = newUpdate.slice(0, index);
+
       for (const priorIndex in priors) {
         const prior = priors[priorIndex];
         if (mustBeAfter.includes(prior)) {
           newUpdate.splice(priorIndex, 1);
           newUpdate.push(prior);
-          break;
+          break; //goes back to while condition
         }
       }
     }
   }
+
   return newUpdate;
 }
 
@@ -73,6 +77,7 @@ function partTwo(input) {
     reorderUpdate(update, rules)
   );
   const middles = rightedWrongs.map(middleOf);
+
   return middles.reduce((sum, number) => sum + number, 0);
 }
 
