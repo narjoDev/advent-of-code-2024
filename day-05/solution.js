@@ -1,11 +1,11 @@
 function parseRulesUpdates(input) {
   let [rawRules, updates] = input.split("\n\n");
 
-  const rules = {}; //key comes before all elements in value array
+  const rules = {}; //key comes before all elements in value set
   rawRules.split("\n").forEach((ruleLine) => {
     const [before, after] = ruleLine.split("|").map(Number);
-    rules[before] ||= [];
-    rules[before].push(after);
+    rules[before] ||= new Set();
+    rules[before].add(after);
   });
 
   updates = updates.split("\n").map((update) => {
@@ -23,7 +23,7 @@ function inRightOrder(update, rules) {
 
     if (mustBeAfter) {
       const priors = update.slice(0, index);
-      if (priors.some((prior) => mustBeAfter.includes(prior))) {
+      if (priors.some((prior) => mustBeAfter.has(prior))) {
         return false;
       }
     }
@@ -48,7 +48,7 @@ function reorderUpdate(update, rules) {
   const newUpdate = [...update];
 
   while (!inRightOrder(newUpdate, rules)) {
-    for (let index = 0; index < newUpdate.length; index += 1) {
+    for (const index in newUpdate) {
       const page = newUpdate[index];
       const mustBeAfter = rules[page];
 
@@ -58,7 +58,8 @@ function reorderUpdate(update, rules) {
 
       for (const priorIndex in priors) {
         const prior = priors[priorIndex];
-        if (mustBeAfter.includes(prior)) {
+
+        if (mustBeAfter.has(prior)) {
           newUpdate.splice(priorIndex, 1);
           newUpdate.push(prior);
           break; //goes back to while condition
