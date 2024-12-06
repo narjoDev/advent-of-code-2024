@@ -19,8 +19,8 @@ function transpose(nestedArray) {
 
 function countHorizontal(lines) {
   return lines.reduce((total, line) => {
-    total += (line.match(/XMAS/g) || []).length;
-    total += (line.match(/SAMX/g) || []).length;
+    total += line.match(/XMAS/g)?.length ?? 0;
+    total += line.match(/SAMX/g)?.length ?? 0;
     return total;
   }, 0);
 }
