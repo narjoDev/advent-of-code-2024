@@ -49,7 +49,7 @@ describe.each([
     expect(computed).toStrictEqual(EXAMPLE_ANSWERS[id]);
   });
 
-  test.skip("actual input", () => {
+  test("actual input", () => {
     //this will fail until we save a correct answer to answers.txt
     //convert computed solution to string since we read answer from a file
     const computedString = String(partFunction(INPUTS.actual));

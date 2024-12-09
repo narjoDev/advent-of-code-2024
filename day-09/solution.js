@@ -25,6 +25,7 @@ function diskMapToBlocks(input) {
 
     digitIsFile = !digitIsFile;
   }
+
   return blocks;
 }
 
@@ -47,7 +48,7 @@ function compact(blocks) {
 }
 
 function checksumCallback(acc, element, index) {
-  if (element === null) {
+  if (element === null || element === undefined) {
     return acc;
   } else {
     const product = element * index;
@@ -58,38 +59,29 @@ function checksumCallback(acc, element, index) {
 function partOne(input) {
   const blocks = diskMapToBlocks(input);
   const compacted = compact(blocks);
+
   return compacted.reduce(checksumCallback, 0);
 }
 
-function diskMapToSizes(input) {
-  const fileSizes = [];
-  const openSizes = [];
+function diskMapToSections(input) {
+  const sections = [];
   let nextIsFile = true;
+  let nextId = 0;
 
   for (let digit of input) {
     digit = Number(digit);
+    const toPush = { size: digit };
 
-    const target = nextIsFile ? fileSizes : openSizes;
-    target.push(digit);
+    if (nextIsFile) {
+      toPush.id = nextId;
+      nextId += 1;
+    }
 
+    sections.push(toPush);
     nextIsFile = !nextIsFile;
   }
 
-  return { fileSizes, openSizes };
-}
-
-function zip(array1, array2) {
-  const zipped = [];
-  //for this problem we can assume same lengths*
-  for (let index = 0; index < array1.length; index += 1) {
-    zipped.push(array1[index]);
-    zipped.push(array2[index]);
-  }
-
-  // *array2 might be one shorter
-  if (zipped.slice(-1)[0] === undefined) zipped.pop();
-
-  return zipped;
+  return sections;
 }
 
 function expand(blockDetails) {
@@ -104,39 +96,37 @@ function expand(blockDetails) {
   return blocks;
 }
 
-function compactWhole(fileSizes, openSizes) {
-  // each file index comes just before that open index
-  // for each file size, find an open space
-  // - of lesser index
-  // - and lesser or equal size
-  // we need to save the file's original index as that is its id
-  //start a new array listing file size with id?
-  //after moving things, zip them together?
-  const fileDetails = fileSizes.map((size, index) => ({ size, id: index }));
-  const openDetails = openSizes.map((size) => ({ size, id: null }));
+function compactWhole(sections) {
+  const lastId = sections.findLast((section) => section.id !== undefined).id;
 
-  fileDetails.reduceRight((_acc, file) => {
-    for (let index = 0; index < file.id; index += 1) {
-      const candidate = openDetails[index];
-      // FIXME: I forgot to consider fitting multiple things in an open space
-      //so maybe my whole approach to part two is broken
-      if (candidate.id === null && candidate.size >= file.size) {
-        openDetails.splice(index, 1, file);
+  for (let fileId = lastId; fileId >= 0; fileId -= 1) {
+    const fileIndex = sections.findIndex((section) => section.id === fileId);
+    const file = sections[fileIndex];
+
+    //find a place to put it
+    for (let tryIndex = 0; tryIndex < fileIndex; tryIndex += 1) {
+      const candidate = sections[tryIndex];
+
+      if (candidate.id === undefined && candidate.size >= file.size) {
+        const extra = candidate.size - file.size;
+
+        candidate.size = extra; //mutating reassignment
+        sections.splice(fileIndex, 1, { size: file.size });
+        sections.splice(tryIndex, 0, file);
         break;
       }
     }
-    return undefined;
-  });
+  }
 
-  return expand(zip(fileDetails, openDetails));
+  return sections;
 }
 
-// function wholeFileChecksumCallback(sum, element, index) {}
-
 function partTwo(input) {
-  const { fileSizes, openSizes } = diskMapToSizes(input);
-  const compacted = compactWhole(fileSizes, openSizes);
-  return compacted.reduce(checksumCallback, 0);
+  const sections = diskMapToSections(input);
+  const compacted = compactWhole(sections);
+  const expanded = expand(compacted);
+
+  return expanded.reduce(checksumCallback, 0);
 }
 
 /*
