@@ -68,8 +68,70 @@ function partOne(input) {
   return antiNodes.size;
 }
 
+function gcd(a, b) {
+  const lesser = Math.min(a, b);
+
+  let greatest = 1;
+  for (let divisor = 2; divisor <= lesser; divisor += 1) {
+    if (a % divisor === 0 && b % divisor === 0) {
+      greatest = divisor;
+    }
+  }
+
+  return greatest;
+}
+
+// eslint-disable-next-line max-lines-per-function, max-statements
+function resonantAntiNodes(a, b, max) {
+  let rowDelta = b.row - a.row;
+  let colDelta = b.col - a.col;
+
+  // determine if there is a lesser inline delta
+  const deltaDivisor = gcd(rowDelta, colDelta);
+  rowDelta = Math.round(rowDelta / deltaDivisor);
+  colDelta = Math.round(colDelta / deltaDivisor);
+
+  const antiNodes = [[a.row, a.col]];
+
+  let row = a.row;
+  let col = a.col;
+  for (let steps = 1; ; steps += 1) {
+    row -= rowDelta;
+    col -= colDelta;
+    if (row < 0 || col < 0 || row > max.row || col > max.col) {
+      break;
+    }
+
+    antiNodes.push([row, col]);
+  }
+
+  row = a.row;
+  col = a.col;
+  for (let steps = 1; ; steps += 1) {
+    row += rowDelta;
+    col += colDelta;
+    if (row < 0 || col < 0 || row > max.row || col > max.col) {
+      break;
+    }
+
+    antiNodes.push([row, col]);
+  }
+
+  return antiNodes.map((node) => node.join(","));
+}
+
 function partTwo(input) {
-  splitToLines(input);
+  const lines = splitToLines(input);
+  const maximums = { row: lines.length - 1, col: lines[0].length - 1 };
+  const antennas = mapAntennas(lines);
+  const antiNodes = new Set();
+  for (const frequency in antennas) {
+    eachPair(antennas[frequency], (a, b) => {
+      const theseAntiNodes = resonantAntiNodes(a, b, maximums);
+      theseAntiNodes.forEach((antiNode) => antiNodes.add(antiNode));
+    });
+  }
+  return antiNodes.size;
 }
 
 /*
