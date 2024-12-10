@@ -58,30 +58,36 @@ function findTrailheads(grid) {
   return trailheads;
 }
 
-// eslint-disable-next-line max-lines-per-function
-function pathFind(grid, coordinates) {
+function neighbors(coordinates) {
+  const [row, col] = coordinates;
+  return [
+    [row - 1, col],
+    [row + 1, col],
+    [row, col - 1],
+    [row, col + 1],
+  ];
+}
+
+function pathPeaks(grid, coordinates) {
   const [row, col] = coordinates;
   const here = grid[row][col];
+
   let peaks = new Set();
+
   if (here === PEAK) {
     peaks.add(coordinates.join(","));
   } else {
-    const adjacents = [
-      [row - 1, col],
-      [row + 1, col],
-      [row, col - 1],
-      [row, col + 1],
-    ];
-    //for each adjacent:
+    const adjacents = neighbors(coordinates);
+
     adjacents.forEach((adjacentCoordinates) => {
-      //if is next
       let [nextRow, nextCol] = adjacentCoordinates;
+
       if (grid[nextRow]?.[nextCol] === here + 1) {
-        //call recursively and take union
-        peaks = peaks.union(pathFind(grid, adjacentCoordinates));
+        peaks = peaks.union(pathPeaks(grid, adjacentCoordinates));
       }
     });
   }
+
   return peaks;
 }
 
@@ -92,7 +98,7 @@ function partOne(input) {
 
   for (const trailhead of trailheads) {
     const key = trailhead.join(",");
-    trails[key] = pathFind(grid, trailhead);
+    trails[key] = pathPeaks(grid, trailhead);
   }
 
   return Object.values(trails).reduce((sum, set) => sum + set.size, 0);
@@ -106,38 +112,33 @@ add them up
 we can use the same traversal but return a number rather than set
 */
 
-// eslint-disable-next-line max-lines-per-function
-function findRating(grid, coordinates) {
+function pathRating(grid, coordinates) {
   const [row, col] = coordinates;
   const here = grid[row][col];
+
   if (here === PEAK) {
     return 1;
   } else {
-    const adjacents = [
-      [row - 1, col],
-      [row + 1, col],
-      [row, col - 1],
-      [row, col + 1],
-    ];
-    //for each adjacent:
-    const ratings = adjacents.map((adjacentCoordinates) => {
-      //if is next
+    const adjacents = neighbors(coordinates);
+
+    const branchRatings = adjacents.map((adjacentCoordinates) => {
       let [nextRow, nextCol] = adjacentCoordinates;
+
       if (grid[nextRow]?.[nextCol] === here + 1) {
-        return findRating(grid, adjacentCoordinates);
+        return pathRating(grid, adjacentCoordinates);
       } else {
         return 0;
       }
     });
 
-    return ratings.reduce((sum, score) => sum + score, 0);
+    return branchRatings.reduce((sum, score) => sum + score, 0);
   }
 }
 
 function partTwo(input) {
   const grid = parseGrid(input);
   const trailheads = findTrailheads(grid);
-  const ratings = trailheads.map((trailhead) => findRating(grid, trailhead));
+  const ratings = trailheads.map((trailhead) => pathRating(grid, trailhead));
 
   return ratings.reduce((sum, score) => sum + score, 0);
 }
