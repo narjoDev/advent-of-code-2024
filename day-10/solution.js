@@ -98,8 +98,48 @@ function partOne(input) {
   return Object.values(trails).reduce((sum, set) => sum + set.size, 0);
 }
 
+/*
+Part Two
+now we care about distinct trails not distinct peaks
+we can actually just return account when we find a peak
+add them up
+we can use the same traversal but return a number rather than set
+*/
+
+// eslint-disable-next-line max-lines-per-function
+function findRating(grid, coordinates) {
+  const [row, col] = coordinates;
+  const here = grid[row][col];
+  if (here === PEAK) {
+    return 1;
+  } else {
+    const adjacents = [
+      [row - 1, col],
+      [row + 1, col],
+      [row, col - 1],
+      [row, col + 1],
+    ];
+    //for each adjacent:
+    const ratings = adjacents.map((adjacentCoordinates) => {
+      //if is next
+      let [nextRow, nextCol] = adjacentCoordinates;
+      if (grid[nextRow]?.[nextCol] === here + 1) {
+        return findRating(grid, adjacentCoordinates);
+      } else {
+        return 0;
+      }
+    });
+
+    return ratings.reduce((sum, score) => sum + score, 0);
+  }
+}
+
 function partTwo(input) {
   const grid = parseGrid(input);
+  const trailheads = findTrailheads(grid);
+  const ratings = trailheads.map((trailhead) => findRating(grid, trailhead));
+
+  return ratings.reduce((sum, score) => sum + score, 0);
 }
 
 /*
