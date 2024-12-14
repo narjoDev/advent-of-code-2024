@@ -81,9 +81,57 @@ function partOne(input) {
   return Object.values(quadrantTallies).reduce((a, b) => a * b);
 }
 
-function partTwo(input) {
-  inputToRobots(input);
+function renderRobots(robots) {
+  const { width, height } = getDimensions();
+  const lines = [];
+  for (let y = 0; y < height; y += 1) {
+    lines.push(" ".repeat(width));
+  }
+
+  robots.forEach(({ position }) => {
+    const { x, y } = position;
+    lines[y] = lines[y].slice(0, x) + "#" + lines[y].slice(x + 1);
+  });
+
+  lines.forEach((line) => console.log(line));
 }
+
+async function partTwo(input) {
+  //manually watch steps to try to see easter egg?????
+  let robots = inputToRobots(input);
+  isActualInput = robots.length === ACTUAL_INPUT_SIZE;
+
+  for (let step = 1; step <= 6856; step += 1) {
+    robots = robots.map(stepRobot);
+
+    //catches left border I noticed developing
+    //...center would have been smarter
+    const x34y50 = robots.some(({ position }) => {
+      const { x, y } = position;
+      return x === 34 && y === 50;
+    });
+    if (!x34y50) continue;
+
+    let skip = 3300;
+    skip = 6000;
+    if (step < skip) continue;
+
+    console.log("\n".repeat(5));
+    console.log(step);
+    renderRobots(robots);
+    const delay = 300;
+    await sleep(delay);
+  }
+}
+
+//https://betterstack.com/community/questions/how-to-sleep-in-node/
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const { readFile } = require("../libs/file-operations");
+const ACTUAL = readFile(`${__dirname}/input-actual.txt`);
+// partTwo(ACTUAL);
 
 /*
 export to wrapper file that:
@@ -92,4 +140,4 @@ export to wrapper file that:
 - outputs return values
 - tests against answers if known
 */
-module.exports = { partOne, partTwo };
+module.exports = { partOne };

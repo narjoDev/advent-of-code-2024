@@ -2,7 +2,7 @@
 
 const { test, expect, describe } = require("@jest/globals");
 const { readFile, writeFile } = require("../libs/file-operations");
-const { partOne, partTwo } = require("./solution");
+const { partOne } = require("./solution");
 
 // read input and answer files
 
@@ -22,7 +22,6 @@ const ANSWERS = {
 
 //use the correct type here (probably a number)
 const EXAMPLE_ANSWERS = {
-  // TODO:
   1: 12,
   2: undefined,
 };
@@ -42,7 +41,7 @@ describe("Helper: PLACEHOLDER", () => {
 
 describe.each([
   [1, partOne],
-  [2, partTwo],
+  // [2, partTwo],
 ])("Part %i Solution", (id, partFunction) => {
   test("example input", () => {
     const computed = partFunction(INPUTS[`example${id}`]);
